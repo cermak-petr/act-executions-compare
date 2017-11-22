@@ -9,7 +9,7 @@
     "url": "https://github.com/cermak-petr/act-executions-compare"
   },
   "dependencies": {
-    "apify": "latest",
-    "underscore": "latest"
+    "apify": "0.4.36",
+    "underscore": "1.8.3"
   }
 }
