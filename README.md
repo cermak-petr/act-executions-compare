@@ -23,7 +23,7 @@ The __idAttr__ parameter is a name of an attribute of each record, that will be 
 The __return__ parameter can be used to tell the act which records to include in the final result set.
 Possible values are __new__, __updated__, __deleted__ and __unchanged__, you can provide more than one separated by comma.
 The __addStatus__ parameter sets if the act should add a __status__ attribute to each of the resulting records.
-If true, it's value will be one of __NEW__, __UPDATED__, __DELETED__ and __UNCHANGED__, depending on the value of __return__ parameter.
+If true, it's value will be one of __NEW__, __UPDATED__, __DELETED__ or __UNCHANGED__, depending on the value of __return__ parameter.
 
 This act can also be run from a __crawler webhook__, in that case the current execution will be compared with directly preceding execution (unless overridden). To use this act from a webhook, use the __Finish webhook data__ in crawler advanced settings to set up the act. 
 
