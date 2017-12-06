@@ -47,17 +47,17 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
                 const id = result[idAttr];
                 const oldResult = compareMap[id];
                 if(!oldResult){
-                    if(settings.addStatus){result.status = 'NEW';}
+                    if(settings.addStatus){result[settings.statusAttr] = 'NEW';}
                     if(settings.returnNew){data.push(result);}
                     newCount++;
                 }
                 else if(!_.isEqual(result, oldResult)){
-                    if(settings.addStatus){result.status = 'UPDATED';}
+                    if(settings.addStatus){result[settings.statusAttr] = 'UPDATED';}
                     if(settings.returnUpd){data.push(result);}
                     updCount++;
                 }
                 else{
-                    if(settings.addStatus){result.status = 'UNCHANGED';}
+                    if(settings.addStatus){result[settings.statusAttr] = 'UNCHANGED';}
                     if(settings.returnUnc){data.push(result);}
                     uncCount++;
                 }
@@ -72,7 +72,7 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
     if(settings.returnDel){
         console.log('processing deleted results');
         _.each(Object.values(compareMap), (oldResult, index) => {
-            if(settings.addStatus){oldResult.status = 'DELETED';}
+            if(settings.addStatus){oldResult[settings.statusAttr] = 'DELETED';}
             data.push(oldResult);
             delCount++;
         });
@@ -124,6 +124,7 @@ Apify.main(async () => {
     settings.returnDel = data.return.match(/deleted/i);
     settings.returnUnc = data.return.match(/unchanged/i);
     settings.addStatus = data.addStatus ? true : false;
+    settings.statusAttr = data.statusAttr ? data.statusAttr : 'status';
     
     const compareMap = await createCompareMap(data.oldExec, data.idAttr);
     const resultData = await compareResults(input._id || data.newExec, compareMap, data.idAttr, settings);
