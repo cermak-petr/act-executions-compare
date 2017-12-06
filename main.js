@@ -114,6 +114,8 @@ Apify.main(async () => {
         }
     }
     
+    if(data.userId){Apify.client.setOptions({userId: data.userId});}
+    
     const settings = {};
     data.return = data.return || 'new, updated';
     settings.returnNew = data.return.match(/new/i);
