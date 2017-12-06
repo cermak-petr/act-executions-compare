@@ -114,6 +114,7 @@ Apify.main(async () => {
         }
     }
     
+    if(data.token){Apify.client.setOptions({token: data.token});}
     if(data.userId){Apify.client.setOptions({userId: data.userId});}
     
     const settings = {};
