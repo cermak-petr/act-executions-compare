@@ -85,10 +85,8 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
 
 async function getPreviousExecId(crawlerId, lastExecId){
     const list = await Apify.client.crawlers.getListOfExecutions({crawlerId, desc: 1});
-    console.dir(list);
     const lastExecIndex = _.findIndex(list.items, (item) => item._id == lastExecId);
-    console.dir(lastExecIndex);
-    if(lastExecIndex && list.items.length > lastExecIndex + 1){
+    if(lastExecIndex > -1 && list.items.length > lastExecIndex + 1){
         return list.items[lastExecIndex + 1]._id;
     }
     return null;
