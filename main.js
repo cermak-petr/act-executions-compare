@@ -109,9 +109,9 @@ Apify.main(async () => {
     }
     else if(!data.oldExec){
         data.oldExec = await getPreviousExecId(input.actId, input._id);
-        if(!data.oldExec){
+        /*if(!data.oldExec){
             return console.log('previous execution not found');
-        }
+        }*/
     }
     
     if(data.token){Apify.client.setOptions({token: data.token});}
