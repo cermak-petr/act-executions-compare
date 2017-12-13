@@ -45,7 +45,7 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
         _.each(results, (result, index) => {
             if(result && result[idAttr]){
                 const id = result[idAttr];
-                const oldResult = compareMap[id];
+                const oldResult = compareMap ? compareMap[id] : null;
                 if(!oldResult){
                     if(settings.addStatus){result[settings.statusAttr] = 'NEW';}
                     if(settings.returnNew){data.push(result);}
@@ -61,7 +61,7 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
                     if(settings.returnUnc){data.push(result);}
                     uncCount++;
                 }
-                delete compareMap[id];
+                if(compareMap){delete compareMap[id];}
             }
         });
         processed += results.length;
@@ -69,7 +69,7 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
     });
     console.log('comparing results finished');
     
-    if(settings.returnDel){
+    if(compareMap && settings.returnDel){
         console.log('processing deleted results');
         _.each(Object.values(compareMap), (oldResult, index) => {
             if(settings.addStatus){oldResult[settings.statusAttr] = 'DELETED';}
@@ -126,7 +126,7 @@ Apify.main(async () => {
     settings.addStatus = data.addStatus ? true : false;
     settings.statusAttr = data.statusAttr ? data.statusAttr : 'status';
     
-    const compareMap = await createCompareMap(data.oldExec, data.idAttr);
+    const compareMap = data.oldExec ? (await createCompareMap(data.oldExec, data.idAttr)) : null;
     const resultData = await compareResults(input._id || data.newExec, compareMap, data.idAttr, settings);
     
     await Apify.setValue('OUTPUT', resultData);
