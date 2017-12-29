@@ -4,11 +4,12 @@ const _ = require('underscore');
 async function loadResults(execId, process){
     const limit = 15000;
     let total = -1, offset = 0;
-    while(total === -1 || offset + limit <= total){
+    while(total === -1 || offset < total){
         const lastResults = await Apify.client.crawlers.getExecutionResults({
             executionId: execId, 
             limit: limit, 
-            offset: offset
+            offset: offset,
+            simplified: 1
         });
         await process(lastResults);
         total = lastResults.total;
@@ -21,7 +22,7 @@ async function createCompareMap(oldExecId, idAttr){
     let processed = 0;
     console.log('creating comparing map');
     await loadResults(oldExecId, async (fullResults) => {
-        const results = _.chain(fullResults.items).pluck('pageFunctionResult').flatten().value();
+        const results = _.chain(fullResults.items).flatten().value();
         _.each(results, (result, index) => {
             if(result && result[idAttr]){
                 data[result[idAttr]] = result;
@@ -41,7 +42,7 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
     
     console.log('comparing results');
     await loadResults(newExecId, async (fullResults) => {
-        const results = _.chain(fullResults.items).pluck('pageFunctionResult').flatten().value();
+        const results = _.chain(fullResults.items).flatten().value();
         _.each(results, (result, index) => {
             if(result && result[idAttr]){
                 const id = result[idAttr];
@@ -63,6 +64,7 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
                 }
                 if(compareMap){delete compareMap[id];}
             }
+            else{console.log('record is missing id (' + idAttr + '): ' + JSON.stringify(result));}
         });
         processed += results.length;
         console.log('compared new results: ' + processed);
