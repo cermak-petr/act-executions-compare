@@ -81,7 +81,9 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
         console.log('processing deleted results finished');
     }
     
-    console.log('new: ' + newCount + ', updated: ' + updCount + ', deleted: ' + delCount + ', unchanged: ' + uncCount);
+    console.log('new: ' + newCount + ', updated: ' + updCount + 
+                (settings.returnDel ? (', deleted: ' + delCount) : '') + 
+                ', unchanged: ' + uncCount);
     return data;
 }
 
