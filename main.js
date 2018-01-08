@@ -106,7 +106,9 @@ function getChangeAttributes(obj1, obj2){
     for(const key in obj1){
         const v1 = obj1[key];
         const v2 = obj2[key];
-        if(v1 != v2){changes.push(key);}
+        if(!_.isEqual(v1, v2)){
+            changes.push(key);
+        }
     }
     return changes;
 }
