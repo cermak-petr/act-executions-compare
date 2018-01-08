@@ -143,6 +143,7 @@ Apify.main(async () => {
     settings.returnDel = data.return.match(/deleted/i);
     settings.returnUnc = data.return.match(/unchanged/i);
     settings.addStatus = data.addStatus ? true : false;
+    settings.addChanges = data.addChanges ? true : false;
     settings.statusAttr = data.statusAttr ? data.statusAttr : 'status';
     
     const compareMap = data.oldExec ? (await createCompareMap(data.oldExec, data.idAttr)) : null;
