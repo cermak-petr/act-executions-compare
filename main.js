@@ -54,7 +54,12 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
                 }
                 else if(!_.isEqual(result, oldResult)){
                     if(settings.addStatus){result[settings.statusAttr] = 'UPDATED';}
-                    if(settings.returnUpd){data.push(result);}
+                    if(settings.returnUpd){
+                        if(settings.addChanges){
+                            result.changes = getChangeAttributes(oldResult, result);
+                        }
+                        data.push(result);
+                    }
                     updCount++;
                 }
                 else{
@@ -94,6 +99,16 @@ async function getPreviousExecId(crawlerId, lastExecId){
         return list.items[lastExecIndex + 1]._id;
     }
     return null;
+}
+
+function getChangeAttributes(obj1, obj2){
+    const changes = [];
+    for(const key in obj1){
+        const v1 = obj1[key];
+        const v2 = obj2[key];
+        if(v1 != v2){changes.push(key);}
+    }
+    return changes;
 }
 
 Apify.main(async () => {
