@@ -103,14 +103,16 @@ async function getPreviousExecId(crawlerId, lastExecId){
 
 function getChangeAttributes(obj1, obj2, prefix, out){
     const changes = out ? out : [];
-    for(const key in obj1){
-        const v1 = obj1[key];
-        const v2 = obj2[key];
-        if(!_.isEqual(v1, v2)){
-            if(v1 !== null && typeof v1 === 'object'){
-                getChangeAttributes(v1, v2, key + '/', changes);
+    if(obj1){
+        for(const key in obj1){
+            const v1 = obj1[key];
+            const v2 = obj2 ? obj2[key] : null;
+            if(!_.isEqual(v1, v2)){
+                if(v1 !== null && typeof v1 === 'object'){
+                    getChangeAttributes(v1, v2, key + '/', changes);
+                }
+                else{changes.push(prefix ? prefix + key : key);}
             }
-            else{changes.push(prefix ? prefix + key : key);}
         }
     }
     return changes;
