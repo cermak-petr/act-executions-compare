@@ -57,7 +57,8 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
                         if(settings.addStatus){result[settings.statusAttr] = 'UPDATED';}
                         if(settings.returnUpd){
                             if(settings.addChanges){
-                                result[settings.changesAttr] = changes || getChangeAttributes(oldResult, result);
+                                const tChanges = changes || getChangeAttributes(oldResult, result);
+                                result[settings.changesAttr] = settings.stringifyChanges ? tChanges.join(', ') : tChanges;
                             }
                             data.push(result);
                         }
