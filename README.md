@@ -16,7 +16,9 @@ Input is a JSON object with the following properties:
   "idAttr": ID_ATTRIBUTE_NAME,
   "return": WHICH_RECORDS_TO_RETURN,    // optional, default: "new, updated"
   "addStatus": ADD_TEXT_STATUS          // optional, default: false
+  "statusAttr": STATUS_ATTR_NAME        // optional, default: "status"
   "addChanges": ADD_CHANGE_INFO         // optional, default: false
+  "changesAttr": CHANGES_ATTR_NAME      // optional, default: "changes"
   "updatedIf": [                        // optional, column list
     "column_1",
     "column_2",
