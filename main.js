@@ -166,6 +166,7 @@ Apify.main(async () => {
     settings.addChanges = data.addChanges ? true : false;
     settings.statusAttr = data.statusAttr ? data.statusAttr : 'status';
     settings.changesAttr = data.changesAttr ? data.changesAttr : 'changes';
+    settings.stringifyChanges = data.stringifyChanges;
     settings.updatedIf = data.updatedIf;
     
     const compareMap = data.oldExec ? (await createCompareMap(data.oldExec, data.idAttr)) : null;
