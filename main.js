@@ -57,7 +57,7 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
                         if(settings.addStatus){result[settings.statusAttr] = 'UPDATED';}
                         if(settings.returnUpd){
                             if(settings.addChanges){
-                                result.changes = changes || getChangeAttributes(oldResult, result);
+                                result[settings.changesAttr] = changes || getChangeAttributes(oldResult, result);
                             }
                             data.push(result);
                         }
@@ -165,6 +165,7 @@ Apify.main(async () => {
     settings.addStatus = data.addStatus ? true : false;
     settings.addChanges = data.addChanges ? true : false;
     settings.statusAttr = data.statusAttr ? data.statusAttr : 'status';
+    settings.changesAttr = data.changesAttr ? data.changesAttr : 'changes';
     settings.updatedIf = data.updatedIf;
     
     const compareMap = data.oldExec ? (await createCompareMap(data.oldExec, data.idAttr)) : null;
