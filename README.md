@@ -14,16 +14,22 @@ Input is a JSON object with the following properties:
   "oldExec": OLD_EXECUTION_ID,
   "newExec": NEW_EXECUTION_ID,
   "idAttr": ID_ATTRIBUTE_NAME,
-  "return": WHICH_RECORDS_TO_RETURN,    // default: "new, updated"
-  "addStatus": ADD_TEXT_STATUS          // default: false
+  "return": WHICH_RECORDS_TO_RETURN,    // optional, default: "new, updated"
+  "addStatus": ADD_TEXT_STATUS          // optional, default: false
+  "addChanges": ADD_CHANGE_INFO         // optional, default: false
+  "updatedIf": [                        // optional, column list
+    "column_1",
+    "column_2",
+    ...
+  ]
 }
 ```
 
-The __idAttr__ parameter is a name of an attribute of each record, that will be used as it's ID.
-The __return__ parameter can be used to tell the act which records to include in the final result set.
-Possible values are __new__, __updated__, __deleted__ and __unchanged__, you can provide more than one separated by comma.
-The __addStatus__ parameter sets if the act should add a __status__ attribute to each of the resulting records.
-If true, it's value will be one of __NEW__, __UPDATED__, __DELETED__ or __UNCHANGED__, depending on the value of __return__ parameter.
+The __idAttr__ parameter is a name of an attribute of each record, that will be used as it's ID.  
+The __return__ parameter can be used to tell the act which records to include in the final result set. Possible values are __new__, __updated__, __deleted__ and __unchanged__, you can provide more than one separated by comma.  
+The __addStatus__ parameter sets if the act should add a __status__ attribute to each of the resulting records. If true, it's value will be one of __NEW__, __UPDATED__, __DELETED__ or __UNCHANGED__, depending on the value of __return__ parameter.
+The __addChanges__ parameter tells the act to include a list of columns that contained changes. This list will be added to a new __changes__ column.  
+The __updatedIf__ parameter can contain an array of column names. If set, the record will be recognized as __updated__ if and only if there was a change in one of those columns. If __addChanges__ is set to __true__, the __changes__ array will still contain all the columns names that had changes.
 
 This act can also be run from a __crawler webhook__, in that case the current execution will be compared with directly preceding execution (unless overridden). To use this act from a webhook, use the __Finish webhook data__ in crawler advanced settings to set up the act. 
 
