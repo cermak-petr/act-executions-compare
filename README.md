@@ -42,8 +42,10 @@ __Example webhook data:__
 ```javascript
 {
   "idAttr": ID_ATTRIBUTE_NAME,
-  "return": WHICH_RECORDS_TO_RETURN,    // default: "new, updated"
-  "addStatus": ADD_TEXT_STATUS          // default: false
+  "return": WHICH_RECORDS_TO_RETURN,
+  "addStatus": ADD_TEXT_STATUS,
+  "addChanges": ADD_CHANGE_INFO,
+  ...
 }
 ```
 
