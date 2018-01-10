@@ -53,14 +53,26 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
                     newCount++;
                 }
                 else if(!_.isEqual(result, oldResult)){
-                    if(settings.addStatus){result[settings.statusAttr] = 'UPDATED';}
-                    if(settings.returnUpd){
-                        if(settings.addChanges){
-                            result.changes = getChangeAttributes(oldResult, result);
+                    const addUpdated = function(changes){
+                        if(settings.addStatus){result[settings.statusAttr] = 'UPDATED';}
+                        if(settings.returnUpd){
+                            if(settings.addChanges){
+                                result.changes = changes || getChangeAttributes(oldResult, result);
+                            }
+                            data.push(result);
                         }
-                        data.push(result);
+                        updCount++;
                     }
-                    updCount++;
+                    if(settings.updatedIf){
+                        const changes = getChangeAttributes(oldResult, result);
+                        if(!_.union(settings.updatedIf, changes).length){
+                            if(settings.addStatus){result[settings.statusAttr] = 'UNCHANGED';}
+                            if(settings.returnUnc){data.push(result);}
+                            uncCount++;
+                        }
+                        else{addUpdated(changes);}
+                    }
+                    else{addUpdated();}
                 }
                 else{
                     if(settings.addStatus){result[settings.statusAttr] = 'UNCHANGED';}
@@ -152,6 +164,7 @@ Apify.main(async () => {
     settings.addStatus = data.addStatus ? true : false;
     settings.addChanges = data.addChanges ? true : false;
     settings.statusAttr = data.statusAttr ? data.statusAttr : 'status';
+    settings.updatedIf = data.updatedIf;
     
     const compareMap = data.oldExec ? (await createCompareMap(data.oldExec, data.idAttr)) : null;
     const resultData = await compareResults(input._id || data.newExec, compareMap, data.idAttr, settings);
