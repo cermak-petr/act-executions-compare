@@ -65,12 +65,13 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
                     }
                     if(settings.updatedIf){
                         const changes = getChangeAttributes(oldResult, result);
-                        if(!_.union(settings.updatedIf, changes).length){
+                        const intersection = _.intersection(settings.updatedIf, changes);
+                        if(!intersection.length){
                             if(settings.addStatus){result[settings.statusAttr] = 'UNCHANGED';}
                             if(settings.returnUnc){data.push(result);}
                             uncCount++;
                         }
-                        else{addUpdated(changes);}
+                        else{addUpdated(intersection);}
                     }
                     else{addUpdated();}
                 }
