@@ -33,7 +33,7 @@ The __addStatus__ parameter sets if the act should add a __status__ attribute to
 The __statusAttr__ parameter overrides the default __status__ column name, where the status will be stored.  
 The __addChanges__ parameter tells the act to include a list of columns that contained changes. This list will be added to a new __changes__ column.  
 The __changesAttr__ parameter overrides the default __changes__ column name, where the changes will be stored.  
-The __updatedIf__ parameter can contain an array of column names. If set, the record will be recognized as __UPDATED__ if and only if there was a change in one of those columns. If __addChanges__ is set to __true__, the __changes__ array will still contain all the columns names that had changes.
+The __updatedIf__ parameter can contain an array of column names. If set, the record will be recognized as __UPDATED__ if and only if there was a change in one of those columns. If __addChanges__ is set to __true__, the __changes__ array will contain the column names that had changes and are also present in the __updatedIf__ array.
 
 This act can also be run from a __crawler webhook__, in that case the current execution will be compared with directly preceding execution (unless overridden). To use this act from a webhook, use the __Finish webhook data__ in crawler advanced settings to set up the act. 
 
