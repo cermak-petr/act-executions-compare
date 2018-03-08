@@ -2,6 +2,14 @@ const Apify = require('apify');
 const _ = require('underscore');
 const Promise = require('bluebird');
 
+function createKey(result, idAttr){
+    return result ? (
+        Array.isArray(idAttr) ? 
+        idAttr.map(ida => result[ida]).join('_') : 
+        result[idAttr]
+    ) : null;
+}
+
 async function loadResults(execId, process){
     const limit = 15000;
     let total = -1, offset = 0;
@@ -25,9 +33,8 @@ async function createCompareMap(oldExecId, idAttr){
     await loadResults(oldExecId, async (fullResults) => {
         const results = _.chain(fullResults.items).flatten().value();
         _.each(results, (result, index) => {
-            if(result && result[idAttr]){
-                data[result[idAttr]] = result;
-            }
+            const key = createKey(result, idAttr);
+            if(key){data[key] = result;}
         });
         processed += results.length;
         console.log('processed old results: ' + processed);
@@ -56,8 +63,8 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
     await loadResults(newExecId, async (fullResults) => {
         const results = _.chain(fullResults.items).flatten().value();
         for(const result of results){
-            if(result && result[idAttr]){
-                const id = result[idAttr];
+            const id = createKey(result, idAttr);
+            if(id){
                 const oldResult = compareMap ? compareMap[id] : null;
                 if(!oldResult){
                     if(settings.addStatus){result[settings.statusAttr] = 'NEW';}
