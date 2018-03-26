@@ -49,10 +49,10 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
     let newCount = 0, updCount = 0, delCount = 0, uncCount = 0, index = 0;
     
     if(settings.useDataset){
-        pushData = (value, flush) => {
+        pushData = async (value, flush) => {
             if(!flush){data.push(value);}
             if(data.length >= 100 || flush){
-                Apify.pushData(data);
+                await Apify.pushData(data);
                 data = [];
             }
         };
