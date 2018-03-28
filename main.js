@@ -127,8 +127,10 @@ async function compareResults(newExecId, compareMap, idAttr, settings){
     else{pushData(null, true);}
 }
 
-async function getPreviousExecId(crawlerId, lastExecId){
-    const list = await Apify.client.crawlers.getListOfExecutions({crawlerId, desc: 1});
+async function getPreviousExecId(crawlerId, lastExecId, status){
+    const callInput = {crawlerId, desc: 1};
+    if(status){callInput.status = status;}
+    const list = await Apify.client.crawlers.getListOfExecutions(callInput);
     const lastExecIndex = _.findIndex(list.items, (item) => item._id == lastExecId);
     if(lastExecIndex > -1 && list.items.length > lastExecIndex + 1){
         return list.items[lastExecIndex + 1]._id;
@@ -169,7 +171,7 @@ Apify.main(async () => {
         }
     }
     else if(!data.oldExec){
-        data.oldExec = await getPreviousExecId(input.actId, input._id);
+        data.oldExec = await getPreviousExecId(input.actId, input._id, data.status);
         /*if(!data.oldExec){
             return console.log('previous execution not found');
         }*/
