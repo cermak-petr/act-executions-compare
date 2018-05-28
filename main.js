@@ -170,7 +170,7 @@ Apify.main(async () => {
             return console.log('missing "newExec" attribute in INPUT');
         }
     }
-    else if(!data.oldExec){
+    else if(!data.oldExec && data.oldExec !== null){
         data.oldExec = await getPreviousExecId(input.actId, input._id, data.status);
         /*if(!data.oldExec){
             return console.log('previous execution not found');
