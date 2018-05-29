@@ -163,7 +163,7 @@ Apify.main(async () => {
         return console.log('missing "idAttr" attribute in INPUT');
     }
     if(!input._id){
-        if(!data.oldExec){
+        if(!data.oldExec && data.oldExec !== null){
             return console.log('missing "oldExec" attribute in INPUT');
         }
         if(!data.newExec){
